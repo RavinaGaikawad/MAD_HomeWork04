@@ -12,4 +12,15 @@
     <string name="year">Year:</string>
     <string name="imdb">IMDB:</string>
     <string name="savechanges">Save Changes</string>
+    <string name="tv_static_mby">Movies By Year</string>
+    <string name="tv_static_title">Title :</string>
+    <string name="tv_static_description">Description :</string>
+    <string name="tv_static_genre">Genre :</string>
+    <string name="tv_static_rating">Rating :</string>
+    <string name="tv_static_year">Year :</string>
+    <string name="tv_static_imdb">IMDB :</string>
+    <string name="first">First</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="last">Last</string>
 </resources>
