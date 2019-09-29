@@ -43,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //code for edit movie
-                Log.d("bagh", "Inside edit button"+ Arrays.toString(movieList.toArray()));
-                Log.d("bagh","Movie List size" + movieList.size());
-                Log.d("bagh","Movie List first name" + movieList.get(0).movieName);
-
                 movienames = new String[movieNames.size()];
                 movienames = movieNames.toArray(movienames);
 
@@ -58,18 +54,13 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    Toast.makeText(MainActivity.this, movienames[i], Toast.LENGTH_SHORT).show();
-
-                                    Movie movie =  new Movie();
-                                    movie = movieList.get(i);
+                                    Movie movie = movieList.get(i);
 
                                     Intent editmovieintent = new Intent(MainActivity.this, EditMovieActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable(KEY_MOVIELIST, movie);
                                     editmovieintent.putExtra(KEY_MOVIELIST, bundle);
                                     startActivityForResult(editmovieintent, REQ_CODE);
-                                    //new EditMovieActivity.EditMovieAsyncTask(movie).execute();
-
                                 }
                             });
 
@@ -88,6 +79,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //code for delete movie
+                movienames = new String[movieNames.size()];
+                movienames = movieNames.toArray(movienames);
+
+                if(movieList.size() > 0)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Pick a movie")
+                            .setItems(movienames, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    movieList.remove(i);
+                                    Toast.makeText(MainActivity.this, movienames[i]+"  movie deleted successfully.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                    final AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "No movies to edit.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -109,52 +123,48 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        boolean moviePresent = false;
         if(requestCode == REQ_CODE)
         {
             if ( resultCode == RESULT_OK ){
-                //Log.d("bagh", "on activity result return");
                 Movie movie= (Movie) data.getExtras().getSerializable(MainActivity.KEY_MOVIELISTRESULT);
 
                 //check if it already exists
                 if(movieList.size() == 0){
-                    Log.d("bagh" , "first movie id: ");
                     movie.movieId = 1;
                     movieList.add(movie);
                     movieNames.add(movie.movieName);
                 }
                 else {
-                    /*for(Movie carnet : movieList) {
-                        if(carnet.getMovieId().equals(movie.movieId)) {
-                            ;
+                    for (Movie mv : movieList) {
+                        if(mv.movieId == movie.movieId)
+                        {
+                            Log.d("bagh", movie.toString());
+                            Log.d("bagh", mv.toString());
+                            mv.movieName = movie.movieName;
+                            mv.description = movie.description;
+                            mv.genre = movie.genre;
+                            mv.rating = movie.rating;
+                            mv.year = movie.year;
+                            mv.imdb = movie.imdb;
+                            Log.d("bagh", mv.toString());
+                            Toast.makeText(this, "mv genre returned for edit "+movie.genre, Toast.LENGTH_SHORT).show();
                         }
-                    }*/
-//                    if(movieList.contains(movie.movieId)){
-//                        //
-//
-//                    }
-//                    else{
-//                        //
-//
-//                    }
-                    // then
-                    Movie maxId = movieList
-                            .stream()
-                            .max(Comparator.comparing(Movie::getMovieId))
-                            .orElseThrow(NoSuchElementException::new);
+                        else
+                        {
+                            Movie maxId = movieList
+                                    .stream()
+                                    .max(Comparator.comparing(Movie::getMovieId))
+                                    .orElseThrow(NoSuchElementException::new);
 
-                    Toast.makeText(this, "max id" + maxId.movieId, Toast.LENGTH_SHORT).show();
-                    Log.d("bagh" , "max movie id: "+maxId.movieId);
+                            movie.movieId = maxId.movieId + 1;
+                            movieList.add(movie);
+                            movieNames.add(movie.movieName);
+                            Toast.makeText(this, "mv genre returned for add "+movie.genre, Toast.LENGTH_SHORT).show();
 
-                    movie.movieId = maxId.movieId + 1;
-                    movieList.add(movie);
-                    movieNames.add(movie.movieName);
+                        }
+                    }
                 }
-
-
-
-                Log.d("bagh", Arrays.toString(movieList.toArray()));
-                Log.d("bagh", "result of added movie name" + movieNames.get(0));
-
             }
             else if(resultCode == RESULT_CANCELED){
                 Toast.makeText(MainActivity.this, "Some Error Ocurred. (Main Activity)", Toast.LENGTH_SHORT).show();

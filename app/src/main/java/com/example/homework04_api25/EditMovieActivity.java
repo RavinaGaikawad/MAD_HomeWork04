@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -15,14 +16,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditMovieActivity extends AppCompatActivity {
+public class EditMovieActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     EditText et_name;
     EditText et_description;
     Spinner sp_genrelist;
     SeekBar sb_rating;
     EditText et_year;
     EditText et_imdb;
-    ArrayList<Movie> movieList;
     int progress = 0;
     List<String> genresList;
     String genreSelected;
@@ -30,6 +30,7 @@ public class EditMovieActivity extends AppCompatActivity {
     String description;
     int year;
     String imdb;
+    String genre;
 
 
     @Override
@@ -74,14 +75,23 @@ public class EditMovieActivity extends AppCompatActivity {
 
         Movie moviebundle = (Movie) extrasFromMain.getSerializable(MainActivity.KEY_MOVIELIST);
 
+        Log.d("bagh" , "movie bundle "+moviebundle.toString());
         //set data for edit
         et_name.setText(moviebundle.movieName);
         et_description.setText(moviebundle.description);
         et_year.setText(""+ moviebundle.year);
         et_imdb.setText(""+moviebundle.imdb);
         sb_rating.setProgress(moviebundle.rating);
-        sp_genrelist.setSelection(dataAdapter.getPosition(moviebundle.genre));
+        progress = moviebundle.rating;
+        genre = moviebundle.genre;
 
+        Log.d("bagh","genre: "+moviebundle.genre);
+
+        int spinnerPosition = dataAdapter.getPosition(genre);
+        spinner.setSelection(spinnerPosition);
+
+        //Code for spinner for genre
+        spinner.setOnItemSelectedListener(this);
 
         //seekbar code
         sb_rating.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -131,6 +141,16 @@ public class EditMovieActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        genreSelected = adapterView.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
