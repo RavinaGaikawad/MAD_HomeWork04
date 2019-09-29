@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">HomeWork04_API25</string>
+    <string name="addmovie">Add Movie</string>
+    <string name="edit">Edit</string>
+    <string name="deletemovie">Delete Movie</string>
+    <string name="showlistbyyear">Show List by Year</string>
+    <string name="showlistbyrating">Show List by Rating</string>
+    <string name="name">Name:</string>
+    <string name="description">Description:</string>
+    <string name="genre">Genre:</string>
+    <string name="rating">Rating:</string>
+    <string name="year">Year:</string>
+    <string name="imdb">IMDB:</string>
+    <string name="savechanges">Save Changes</string>
+</resources>
