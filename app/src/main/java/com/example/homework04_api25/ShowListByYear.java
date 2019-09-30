@@ -239,7 +239,7 @@ public class ShowListByYear extends AppCompatActivity {
     class RatingComp implements Comparator<Movie>{
         @Override
         public int compare(Movie e1, Movie e2) {
-            if(e1.getRating() > e2.getRating()){
+            if(e1.getRating() < e2.getRating()){
                 return 1;
             } else {
                 return -1;
@@ -250,7 +250,7 @@ public class ShowListByYear extends AppCompatActivity {
     class YearComp implements Comparator<Movie>{
         @Override
         public int compare(Movie e1, Movie e2) {
-            if(e1.getYear() < e2.getYear()){
+            if(e1.getYear() > e2.getYear()){
                 return 1;
             } else {
                 return -1;

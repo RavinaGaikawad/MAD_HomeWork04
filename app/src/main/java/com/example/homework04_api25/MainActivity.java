@@ -9,16 +9,21 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class MainActivity extends AppCompatActivity {
-    public int REQ_CODE = 1;
+    public int REQ_CODE_ADD = 1;
+    public int REQ_CODE_EDIT = 2;
     public static String KEY_MOVIELIST = "MovieList";
     public static String KEY_MOVIELISTRESULT = "MovieListResult";
     public ArrayList<Movie> movieList = new ArrayList<>();
+    public Movie tempMovie = new Movie();
     public ArrayList<String> movieNames = new ArrayList<>();
     String[] movienames;
 
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //code for add movie
                 Intent addmovieintent = new Intent(MainActivity.this, AddMovieActivity.class);
-                startActivityForResult(addmovieintent, REQ_CODE);
+                startActivityForResult(addmovieintent, REQ_CODE_ADD);
             }
         });
 
@@ -45,29 +50,27 @@ public class MainActivity extends AppCompatActivity {
                 movienames = new String[movieNames.size()];
                 movienames = movieNames.toArray(movienames);
 
-                if(movieList.size() > 0)
-                {
+                if (movieList.size() > 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle("Pick a movie")
                             .setItems(movienames, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                                    tempMovie = movieList.get(i);
                                     Movie movie = movieList.get(i);
+                                    movieList.remove(i);
 
                                     Intent editmovieintent = new Intent(MainActivity.this, EditMovieActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putParcelable(KEY_MOVIELIST, movie);
                                     editmovieintent.putExtra(KEY_MOVIELIST, bundle);
-                                    startActivityForResult(editmovieintent, REQ_CODE);
+                                    startActivityForResult(editmovieintent, REQ_CODE_EDIT);
                                 }
                             });
 
                     final AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(MainActivity.this, "No movies to edit.", Toast.LENGTH_SHORT).show();
                 }
 
@@ -81,24 +84,21 @@ public class MainActivity extends AppCompatActivity {
                 movienames = new String[movieNames.size()];
                 movienames = movieNames.toArray(movienames);
 
-                if(movieList.size() > 0)
-                {
+                if (movieList.size() > 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle("Pick a movie")
                             .setItems(movienames, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     movieList.remove(i);
-                                    Toast.makeText(MainActivity.this, movienames[i]+"  movie deleted successfully.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, movienames[i] + "  movie deleted successfully.", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
                     final AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
-                else
-                {
-                    Toast.makeText(MainActivity.this, "No movies to delete.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "No movies to edit.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -152,52 +152,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQ_CODE)
-        {
-            if ( resultCode == RESULT_OK ){
+        if (requestCode == REQ_CODE_ADD) {
+            if (resultCode == RESULT_OK) {
                 Movie movie = data.getExtras().getParcelable(MainActivity.KEY_MOVIELISTRESULT);
-                if(movie != null) {
-                    //check if it already exists
-                    if(movieList.size() == 0){
-                        movie.setMovieId(1);
-                        movieList.add(movie);
-                        movieNames.add(movie.getMovieName());
-                    }
-                    else {
-                        for (Movie mv : movieList) {
+                if (movieList.size() == 0) {
+                    movie.setMovieId(1);
+                    movieList.add(movie);
+                    movieNames.add(movie.getMovieName());
+                } else {
+                    Movie maxId = movieList
+                            .stream()
+                            .max(Comparator.comparing(Movie::getMovieId))
+                            .orElseThrow(NoSuchElementException::new);
 
-                            if(mv.getMovieId() == movie.getMovieId())
-                            {
-                                Log.d("bagh 2", movie.toString());
-                                Log.d("bagh 1", mv.toString());
-                                mv.movieName = movie.getMovieName();
-                                mv.description = movie.getDescription();
-                                mv.genre = movie.getGenre();
-                                mv.rating = movie.getRating();
-                                mv.year = movie.getYear();
-                                mv.imdb = movie.getImdb();
-                                Log.d("bagh 3", mv.toString());
-                                Toast.makeText(this, "mv genre returned for edit " + movie.genre, Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            else
-                            {
-                                Movie maxId = movieList
-                                        .stream()
-                                        .max(Comparator.comparing(Movie::getMovieId))
-                                        .orElseThrow(NoSuchElementException::new);
-
-                                movie.setMovieId(maxId.movieId + 1);
-                                movieList.add(movie);
-                                movieNames.add(movie.getMovieName());
-                                Toast.makeText(this, "mv genre returned for add " + movie.genre, Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                        }
-                    }
+                    movie.setMovieId(maxId.movieId + 1);
+                    movieList.add(movie);
+                    movieNames.add(movie.getMovieName());
+                    Toast.makeText(this, "mv genre returned for add " + movie.genre, Toast.LENGTH_SHORT).show();
                 }
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(MainActivity.this, "Some Error Ocurred. (Main Activity)", Toast.LENGTH_SHORT).show();
             }
-            else if(resultCode == RESULT_CANCELED){
+        } else if (requestCode == REQ_CODE_EDIT) {
+            if (resultCode == RESULT_OK) {
+                Movie getMoviefromEdit = data.getExtras().getParcelable(MainActivity.KEY_MOVIELISTRESULT);
+                movieList.add(getMoviefromEdit);
+                Toast.makeText(this, "mv genre returned for edit " + getMoviefromEdit.genre, Toast.LENGTH_SHORT).show();
+                tempMovie = null;
+            }  else if (resultCode == RESULT_CANCELED) {
+                movieList.add(tempMovie);
                 Toast.makeText(MainActivity.this, "Some Error Ocurred. (Main Activity)", Toast.LENGTH_SHORT).show();
             }
         }

@@ -66,6 +66,8 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
 
         //Code for spinner for genre
         Spinner spinner = findViewById(R.id.sp_genrelist);
+
+
         spinner.setOnItemSelectedListener(this);
 
         //Spinner dropdown elements
@@ -189,6 +191,6 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        
     }
 }
