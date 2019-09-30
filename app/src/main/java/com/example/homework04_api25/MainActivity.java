@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //code for add movie
                 Intent addmovieintent = new Intent(MainActivity.this, AddMovieActivity.class);
-              /*  Bundle bundle = new Bundle();
-                bundle.putParcelable(KEY_MOVIELIST, (Parcelable) movieList);*/
                 startActivityForResult(addmovieintent, REQ_CODE);
             }
         });
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "No movies to edit.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "No movies to delete.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -109,22 +107,30 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt_showbyyear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction("com.example.homework04_api25.intent.action.VIEW");
-                sendIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                sendIntent.setType("array/moviebyyear");
-                sendIntent.putParcelableArrayListExtra(KEY_MOVIELIST, movieList);
 
-                // Verify that the intent will resolve to an activity
-                if (sendIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(sendIntent);
+                if(movieList.size() > 0){
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction("com.example.homework04_api25.intent.action.VIEW");
+                    sendIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                    sendIntent.setType("array/moviebyyear");
+                    sendIntent.putParcelableArrayListExtra(KEY_MOVIELIST, movieList);
+
+                    // Verify that the intent will resolve to an activity
+                    if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(sendIntent);
+                    }
                 }
+                else {
+                    Toast.makeText(MainActivity.this, "No Movies to view.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         findViewById(R.id.bt_showbyrating).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(movieList.size() > 0){
                 Intent sendIntent = new Intent();
                 sendIntent.setAction("com.example.homework04_api25.intent.action.VIEW");
                 sendIntent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -134,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
                 // Verify that the intent will resolve to an activity
                 if (sendIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(sendIntent);
+                }
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "No Movies to view.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -168,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                                 mv.imdb = movie.getImdb();
                                 Log.d("bagh 3", mv.toString());
                                 Toast.makeText(this, "mv genre returned for edit " + movie.genre, Toast.LENGTH_SHORT).show();
-                                //break;
+                                break;
                             }
                             else
                             {
@@ -181,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                                 movieList.add(movie);
                                 movieNames.add(movie.getMovieName());
                                 Toast.makeText(this, "mv genre returned for add " + movie.genre, Toast.LENGTH_SHORT).show();
-                                //break;
+                                break;
                             }
                         }
                     }

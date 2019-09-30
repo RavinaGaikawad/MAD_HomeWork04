@@ -213,8 +213,8 @@
 
     <ImageView
         android:id="@+id/iv_first"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="303dp"
@@ -228,8 +228,8 @@
 
     <ImageView
         android:id="@+id/iv_previous"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="201dp"
         android:layout_marginBottom="16dp"
@@ -243,24 +243,23 @@
 
     <ImageView
         android:id="@+id/iv_next"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="27dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="113dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="28dp"
         android:contentDescription="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.906"
         app:layout_constraintStart_toEndOf="@+id/iv_previous"
         app:layout_constraintTop_toBottomOf="@+id/tv_imdb"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/next" />
 
     <ImageView
         android:id="@+id/iv_last"
-        android:layout_width="88dp"
-        android:layout_height="88dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="15dp"
@@ -271,4 +270,15 @@
         app:layout_constraintStart_toEndOf="@+id/iv_next"
         app:layout_constraintTop_toBottomOf="@+id/tv_imdb"
         app:srcCompat="@drawable/last" />
+
+    <Button
+        android:id="@+id/bt_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/finish"
+        app:layout_constraintEnd_toStartOf="@+id/iv_next"
+        app:layout_constraintStart_toEndOf="@+id/iv_previous"
+        app:layout_constraintTop_toBottomOf="@+id/tv_imdb" />
 </androidx.constraintlayout.widget.ConstraintLayout>

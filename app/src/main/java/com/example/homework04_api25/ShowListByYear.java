@@ -139,6 +139,13 @@ public class ShowListByYear extends AppCompatActivity {
                 }
             });
 
+            findViewById(id.bt_finish).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
         }
     }
 
@@ -216,6 +223,13 @@ public class ShowListByYear extends AppCompatActivity {
                         tv_year.setText(String.valueOf(RatingMovie.get(count).getYear()));
                         tv_imdb.setText(RatingMovie.get(count).getImdb());
                     }
+                }
+            });
+
+            findViewById(id.bt_finish).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
                 }
             });
 

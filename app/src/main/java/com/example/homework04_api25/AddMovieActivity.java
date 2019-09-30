@@ -31,6 +31,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
     String description;
     int year;
     String imdb;
+    boolean isErrorPresent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,21 +101,82 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                 year = Integer.parseInt(et_year.getText().toString());
                 imdb = et_imdb.getText().toString();
 
-                Movie movie = new Movie();
-                movie.setMovieName(movieName);
-                movie.setDescription(description);
-                movie.setGenre(genreSelected);
-                movie.setRating(progress);
-                movie.setYear(year);
-                movie.setImdb(imdb);
+                if(movieName.length() > 50) {
+                    et_name.setError("Movie name should not exceed 50 characters.");
+                    Toast.makeText(AddMovieActivity.this, "Movie name should not exceed 50 characters.", Toast.LENGTH_SHORT).show();
+                    isErrorPresent = true;
+                }
+                else {
+                    isErrorPresent = false;
+                }
 
-                Log.d("bagh", movie.toString());
+                if(description.length() > 1000 || String.valueOf(year).length() > 4 || movieName.length() > 50
+                        || movieName.length() == 0 || description.length() == 0 || String.valueOf(year).length() == 0 || imdb.length() == 0 || genreSelected == "select") {
+                    isErrorPresent = true;
 
-                Intent intent = new Intent();
-                intent.putExtra(MainActivity.KEY_MOVIELISTRESULT, movie);
-                setResult(RESULT_OK, intent);
-                Toast.makeText(AddMovieActivity.this, "Returning ADD movie", Toast.LENGTH_SHORT).show();
-                finish();
+                    if(movieName.length() == 0){
+                        et_name.setError("Please provide a movie name.");
+                        Toast.makeText(AddMovieActivity.this, "Please provide a movie name.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(description.length() == 0){
+                        et_description.setError("Please provide a movie description.");
+                        Toast.makeText(AddMovieActivity.this, "Please provide a movie description.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(imdb.length() == 0){
+                        et_imdb.setError("Please provide a movie imdb.");
+                        Toast.makeText(AddMovieActivity.this, "Please provide a movie imdb.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(genreSelected == "select"){
+                        Toast.makeText(AddMovieActivity.this, "Please provide a movie genre.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(String.valueOf(year).length() == 0){
+                        et_name.setError("Please provide a movie year.");
+                        Toast.makeText(AddMovieActivity.this, "Please provide a movie year.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(movieName.length() > 50) {
+                        et_name.setError("Movie name should not exceed 50 characters.");
+                        Toast.makeText(AddMovieActivity.this, "Movie name should not exceed 50 characters.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(description.length() > 1000) {
+                        et_description.setError("Movie description should not exceed 1000 characters.");
+                        Toast.makeText(AddMovieActivity.this, "Movie description should not exceed 1000 characters.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(String.valueOf(year).length() > 4)
+                    {
+                        et_year.setError("Invalid year");
+                        Toast.makeText(AddMovieActivity.this, "Invalid year.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    isErrorPresent = false;
+                }
+
+
+                if(!isErrorPresent){
+                    Movie movie = new Movie();
+                    movie.setMovieName(movieName);
+                    movie.setDescription(description);
+                    movie.setGenre(genreSelected);
+                    movie.setRating(progress);
+                    movie.setYear(year);
+                    movie.setImdb(imdb);
+
+                    Log.d("bagh", movie.toString());
+
+                    Intent intent = new Intent();
+                    intent.putExtra(MainActivity.KEY_MOVIELISTRESULT, movie);
+                    setResult(RESULT_OK, intent);
+                    Toast.makeText(AddMovieActivity.this, "Returning ADD movie", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
             }
         });
     }
