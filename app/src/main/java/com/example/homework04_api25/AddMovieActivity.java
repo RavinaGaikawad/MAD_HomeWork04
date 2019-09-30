@@ -4,14 +4,17 @@ package com.example.homework04_api25;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,17 +75,46 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
 
         //Spinner dropdown elements
         genresList = new ArrayList<String>();
-        genresList.add(0, "Action");
-        genresList.add(1, "Animation");
-        genresList.add(2, "Comedy");
-        genresList.add(3, "Documentary");
-        genresList.add(4,"Family");
-        genresList.add(5, "Horror");
-        genresList.add(6, "Crime");
-        genresList.add(7, "Others");
+        genresList.add(0, "Select");
+        genresList.add(1, "Action");
+        genresList.add(2, "Animation");
+        genresList.add(3, "Comedy");
+        genresList.add(4, "Documentary");
+        genresList.add(5,"Family");
+        genresList.add(6, "Horror");
+        genresList.add(7, "Crime");
+        genresList.add(8, "Others");
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genresList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genresList){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0)
+                {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if(position == 0){
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                }
+                else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };;
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -100,7 +132,12 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
 
                 movieName = et_name.getText().toString();
                 description = et_description.getText().toString();
-                year = Integer.parseInt(et_year.getText().toString());
+                if("".equals(et_year.getText().toString())){
+                    year = Integer.parseInt("123455555");
+                } else {
+                    year = Integer.parseInt(et_year.getText().toString());
+                }
+
                 imdb = et_imdb.getText().toString();
 
                 if(movieName.length() > 50) {
@@ -113,7 +150,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                 }
 
                 if(description.length() > 1000 || String.valueOf(year).length() > 4 || movieName.length() > 50
-                        || movieName.length() == 0 || description.length() == 0 || String.valueOf(year).length() == 0 || imdb.length() == 0 || genreSelected == "select") {
+                        || movieName.length() == 0 || description.length() == 0 || String.valueOf(year).length() == 0 || imdb.length() == 0 || genreSelected == "Select") {
                     isErrorPresent = true;
 
                     if(movieName.length() == 0){
@@ -131,7 +168,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                         Toast.makeText(AddMovieActivity.this, "Please provide a movie imdb.", Toast.LENGTH_SHORT).show();
                     }
 
-                    if(genreSelected == "select"){
+                    if(genreSelected == "Select"){
                         Toast.makeText(AddMovieActivity.this, "Please provide a movie genre.", Toast.LENGTH_SHORT).show();
                     }
 

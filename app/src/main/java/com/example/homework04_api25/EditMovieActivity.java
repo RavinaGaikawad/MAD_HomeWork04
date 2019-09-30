@@ -115,7 +115,7 @@ public class EditMovieActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View view) {
                 //add edit code
-                Log.d("bagh" , "Inside edit button");
+                //Log.d("bagh" , "Inside edit button");
 
                 movieName = et_name.getText().toString();
                 description = et_description.getText().toString();
@@ -124,7 +124,7 @@ public class EditMovieActivity extends AppCompatActivity implements AdapterView.
 
 
                 if(description.length() > 1000 || String.valueOf(year).length() > 4 || movieName.length() > 50
-                || movieName.length() == 0 || description.length() == 0 || String.valueOf(year).length() == 0 || imdb.length() == 0 || genreSelected == "select") {
+                || "".equals(movieName) || "".equals(description) || String.valueOf(year).length() == 0 || "".equals(imdb) || genreSelected == "Select") {
                     isErrorPresent = true;
 
                     if(movieName.length() == 0){
@@ -142,7 +142,7 @@ public class EditMovieActivity extends AppCompatActivity implements AdapterView.
                         Toast.makeText(EditMovieActivity.this, "Please provide a movie imdb.", Toast.LENGTH_SHORT).show();
                     }
 
-                    if(genreSelected == "select"){
+                    if(genreSelected == "Select"){
                         Toast.makeText(EditMovieActivity.this, "Please provide a movie genre.", Toast.LENGTH_SHORT).show();
                     }
 
