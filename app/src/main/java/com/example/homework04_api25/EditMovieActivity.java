@@ -73,9 +73,9 @@ public class EditMovieActivity extends AppCompatActivity implements AdapterView.
 
         final Bundle extrasFromMain = getIntent().getExtras().getBundle(MainActivity.KEY_MOVIELIST);
 
-        Movie moviebundle = (Movie) extrasFromMain.getSerializable(MainActivity.KEY_MOVIELIST);
+        Movie moviebundle = (Movie) extrasFromMain.getParcelable(MainActivity.KEY_MOVIELIST);
 
-        Log.d("bagh" , "movie bundle "+moviebundle.toString());
+        Log.d("bagh" , "movie bundle "+ moviebundle.toString());
         //set data for edit
         et_name.setText(moviebundle.movieName);
         et_description.setText(moviebundle.description);

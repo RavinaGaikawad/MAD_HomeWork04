@@ -46,12 +46,12 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         et_imdb = findViewById(R.id.et_imdb);
         sb_rating.setMax(5);
 
-        //seekbar code
+        // SeekBar
         sb_rating.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                Log.d("bagh", "Progress bar: " +progress);
+                Log.d("bagh", "Progress Bar: " + progress);
             }
 
             @Override
@@ -101,19 +101,19 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                 imdb = et_imdb.getText().toString();
 
                 Movie movie = new Movie();
-                movie.movieName = movieName;
-                movie.description = description;
-                movie.genre = genreSelected;
-                movie.rating = progress;
-                movie.year = year;
-                movie.imdb = imdb;
+                movie.setMovieName(movieName);
+                movie.setDescription(description);
+                movie.setGenre(genreSelected);
+                movie.setRating(progress);
+                movie.setYear(year);
+                movie.setImdb(imdb);
 
                 Log.d("bagh", movie.toString());
 
                 Intent intent = new Intent();
                 intent.putExtra(MainActivity.KEY_MOVIELISTRESULT, movie);
                 setResult(RESULT_OK, intent);
-                Toast.makeText(AddMovieActivity.this, "returning ADD movie", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMovieActivity.this, "Returning ADD movie", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

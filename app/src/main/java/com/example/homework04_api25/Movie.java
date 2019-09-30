@@ -1,8 +1,9 @@
 package com.example.homework04_api25;
-import java.io.Serializable;
-import java.util.Comparator;
 
-public class Movie implements Serializable {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Movie implements Parcelable {
     String movieName;
     String description;
     String genre;
@@ -94,10 +95,53 @@ public class Movie implements Serializable {
                 '}';
     }
 
- /*   @Override
+    @Override
+    public int describeContents() {
+        return movieId;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(movieId);
+        dest.writeInt(year);
+        dest.writeInt(rating);
+        dest.writeString(movieName);
+        dest.writeString(description);
+        dest.writeString(genre);
+        dest.writeString(imdb);
+    }
+
+    //constructor used for parcel
+    public Movie(Parcel parcel){
+        this.movieId = parcel.readInt();
+        this.year = parcel.readInt();
+        this.rating = parcel.readInt();
+        this.movieName = parcel.readString();
+        this.description = parcel.readString();
+        this.genre = parcel.readString();
+        this.imdb = parcel.readString();
+    }
+
+    //creator - used when un-parceling our parcle (creating the object)
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){
+
+        @Override
+        public Movie createFromParcel(Parcel parcel) {
+            return new Movie(parcel);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[0] ;
+        }
+    };
+
+/*
+    @Override
     public int compare(Movie movie1, Movie movie2) {
         //return movie1.getMovieId().(movie2.getMovieId());
         movie1.getMovieId().compareTo()
         return 0;
-    }*/
+    }
+*/
 }

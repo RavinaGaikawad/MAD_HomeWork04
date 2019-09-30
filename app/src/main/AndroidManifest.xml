@@ -9,13 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowListByYear"></activity>
+        <activity android:name=".ShowListByYear">
+            <intent-filter>
+                <action android:name="com.example.homework04_api25.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="array/moviebyyear" />
+                <data android:mimeType="array/moviebyrating" />
+            </intent-filter>
+        </activity>
         <activity android:name=".EditMovieActivity" />
         <activity android:name=".AddMovieActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
