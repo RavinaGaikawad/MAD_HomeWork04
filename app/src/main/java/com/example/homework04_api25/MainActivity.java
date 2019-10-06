@@ -4,7 +4,7 @@ package com.example.homework04_api25;
 
 Author: Sameer Shanbhag 801099638
 Author: Ravina Gaikawad 801137495
-
+Group: 1 5
 */
 
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                                     tempMovie = movieList.get(i);
                                     Movie movie = movieList.get(i);
                                     movieList.remove(i);
-
+                                    movieNames.remove(i);
                                     Intent editmovieintent = new Intent(MainActivity.this, EditMovieActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putParcelable(KEY_MOVIELIST, movie);
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     movieList.remove(i);
+                                    movieNames.remove(i);
                                     Toast.makeText(MainActivity.this, movienames[i] + "  movie deleted successfully.", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -181,10 +182,12 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Movie getMoviefromEdit = data.getExtras().getParcelable(MainActivity.KEY_MOVIELISTRESULT);
                 movieList.add(getMoviefromEdit);
+                movieNames.add(getMoviefromEdit.getMovieName());
                 Toast.makeText(this, "mv genre returned for edit " + getMoviefromEdit.genre, Toast.LENGTH_SHORT).show();
                 tempMovie = null;
             }  else if (resultCode == RESULT_CANCELED) {
                 movieList.add(tempMovie);
+                movieNames.add(tempMovie.getMovieName());
                 Toast.makeText(MainActivity.this, "Some Error Ocurred. (Main Activity)", Toast.LENGTH_SHORT).show();
             }
         }
